@@ -17,6 +17,9 @@ run_generator:
 gen_interactor:
 	spec/dummy/bin/rails g interactor cont#index
 
+gen_repository:
+	spec/dummy/bin/rails g repository cont#index-databases
+
 del_interactor:
 	spec/dummy/bin/rails d interactor cont#index
 

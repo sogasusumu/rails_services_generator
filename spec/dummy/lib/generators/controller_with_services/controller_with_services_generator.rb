@@ -14,21 +14,21 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
   end
 
   def create_repositories
-    options[:models].to_a.each do |model|
-      actions.each do |action|
-        @action = action
-        @model = model.to_s
-        template 'repository.erb', repository_path(action, model.to_s)
-        @action = nil
-        @model = nil
-      end
-    end
+    options[:models].to_a.each &method(:gen_repositories)
   end
 
   private
 
   def gen_interactor(action)
     generate 'interactor', "#{controller_name}##{action}"
+  end
+
+  def gen_repositories(model)
+    actions.each { |action| gen_repository(action, model) }
+  end
+
+  def gen_repository(action, model)
+    generate 'repository', "#{controller_name}##{action}-#{model}"
   end
 
   # @return [String]
@@ -67,30 +67,6 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
     app_path.join(service).join(controller_const.underscore)
   end
 
-  # @return [Pathname]
-  def repositories_path
-    pathname('repositories')
-  end
-
-  # @return [Array<Hash>]
-  def repository_attributes
-    options[:models].to_a.flatten.map do |model|
-      actions.map do |action|
-        {
-            const: repository_const(action, model.to_s),
-            path: repository_path(action, model.to_s)
-        }
-      end
-    end
-  end
-
-  # @param [String]
-  # @param [String]
-  # @return [Pathname]
-  def repository_path(action, model)
-    repositories_path.join(action).join(repository_file_name(model, true))
-  end
-
   # @param base [String]
   # @param klass [String]
   # @param extension [String]
@@ -100,23 +76,6 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
         [base.singularize, klass].join('_'),
         extension_additional ? extension : nil
     ].reject(&:blank?).join('.')
-  end
-
-  # @param [String]
-  # @return [String]
-  def repository_file_name(model, extension_additional = false)
-    file_name(model, 'repository', extension_additional)
-  end
-
-  # @param action [String]
-  # @param model [String]
-  # @return [String]
-  def repository_const(action, model)
-    [
-        controller_const,
-        action.camelize,
-        repository_file_name(model).camelize
-    ].join('::')
   end
 
   # @return [Pathname]
@@ -188,5 +147,20 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
         routing_prefix,
         routing_suffix(action)
     ].reject(&:blank?).join('/')
+  end
+
+  # @param action [String]
+  # @return [String]
+  def interactor_file_name(action, extension_additional = false)
+    file_name(action, 'interactor', extension_additional)
+  end
+
+  # @param action [String]
+  # @return [String]
+  def interactor_const(action)
+    [
+        controller_const,
+        interactor_file_name(action).camelize
+    ].join('::')
   end
 end
