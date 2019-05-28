@@ -10,11 +10,7 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
   end
 
   def create_interactor
-    actions.each do |action|
-      @action = action
-      template 'interactor.erb', interactor_path(action)
-      @action = nil
-    end
+    actions.each &method(:gen_interactor)
   end
 
   def create_repositories
@@ -30,6 +26,10 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
   end
 
   private
+
+  def gen_interactor(action)
+    generate 'interactor', "#{controller_name}##{action}"
+  end
 
   # @return [String]
   def controller_name
@@ -117,41 +117,6 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
         action.camelize,
         repository_file_name(model).camelize
     ].join('::')
-  end
-
-  # @return [Pathname]
-  def interactors_path
-    pathname('interactors')
-  end
-
-  # @param action [String]
-  # @return [Pathname]
-  def interactor_path(action)
-    interactors_path.join(interactor_file_name(action, true))
-  end
-
-  # @param action [String]
-  # @return [String]
-  def interactor_file_name(action, extension_additional = false)
-    file_name(action, 'interactor', extension_additional)
-  end
-
-  # @param action [String]
-  # @return [String]
-  def interactor_const(action)
-    [
-        controller_const,
-        interactor_file_name(action).camelize
-    ].join('::')
-  end
-
-  def interactor_attributes
-    actions.map do |action|
-      {
-          const: interactor_const(action),
-          path: interactor_path(action)
-      }
-    end
   end
 
   # @return [Pathname]

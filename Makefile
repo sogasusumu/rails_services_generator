@@ -14,6 +14,12 @@ run_rspec:
 run_generator:
 	spec/dummy/bin/rails g controller_with_services arg0 index show create update delete destroy -m m1 m2 m3
 
+gen_interactor:
+	spec/dummy/bin/rails g interactor cont#index
+
+del_interactor:
+	spec/dummy/bin/rails d interactor cont#index
+
 delete_generator:
 	spec/dummy/bin/rails d controller_with_services arg0
 

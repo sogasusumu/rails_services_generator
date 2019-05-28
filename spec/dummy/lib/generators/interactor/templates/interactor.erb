@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+class <%= const %> < ApplicationJob
+  include Contracts::Core
+  include Contracts::Builtin
+  queue_as :default
+
+  def perform(params)
+  end
+end
