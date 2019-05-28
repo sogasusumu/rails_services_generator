@@ -1,5 +1,3 @@
-require 'pp'
-
 class ControllerWithServicesGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 
@@ -17,6 +15,10 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
     options[:models].to_a.each &method(:gen_repositories)
   end
 
+  def create_responders
+    actions.each &method(:gen_responder)
+  end
+
   private
 
   def gen_interactor(action)
@@ -29,6 +31,10 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
 
   def gen_repository(action, model)
     generate 'repository', "#{controller_name}##{action}-#{model}"
+  end
+
+  def gen_responder(action)
+    generate 'responder', "#{controller_name}##{action}"
   end
 
   # @return [String]

@@ -11,20 +11,11 @@ rm_dummy_spec:
 run_rspec:
 	bundle exec rspec spec
 
+template_copy:
+	cd spec/dummy && bundle exec rails app:templates:copy
+
 run_generator:
 	spec/dummy/bin/rails g controller_with_services arg0 index show create update delete destroy -m m1 m2 m3
 
-gen_interactor:
-	spec/dummy/bin/rails g interactor cont#index
-
-gen_repository:
-	spec/dummy/bin/rails g repository cont#index-databases
-
-del_interactor:
-	spec/dummy/bin/rails d interactor cont#index
-
 delete_generator:
 	spec/dummy/bin/rails d controller_with_services arg0
-
-template_copy:
-	cd spec/dummy && bundle exec rails app:templates:copy
