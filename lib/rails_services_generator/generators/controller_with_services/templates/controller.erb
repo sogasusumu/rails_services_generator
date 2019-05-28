@@ -1,0 +1,11 @@
+class <%= controller_const %> < ApplicationController
+<% actions.each do |action| -%>
+  api <%= http_methods(action) %>, '<%= routing_path(action) %>'
+  def <%= action %>
+    interacted = <%= interactor_const(action) %>.perform_now(params)
+    response = <%= responder_const(action) %>.perform_now(interacted)
+    render json: response
+  end
+<%= "\n" unless action == actions.last -%>
+<% end -%>
+end

@@ -1,0 +1,29 @@
+# frozen_string_literal: true
+
+class <%= const %>
+  include Contracts::Core
+  include Contracts::Builtin
+
+  # using raising attr_accessor.
+  # attr_accessor_with_contract :property, Class Or Contract
+  # attr_accessor_with_contract :name, String
+
+  Contract Hash => Any
+  def initialize(params)
+    params.each { |k, v| send(:"#{k}=", v) if respond_to?(:"#{k}=") }
+  end
+
+  Contract nil => <%= const %>
+  def perform
+    tap do
+      # do something
+    end
+  end
+
+  class << self
+    Contract Hash => <%= const %>
+    def call(params)
+      new(params).perform
+    end
+  end
+end
