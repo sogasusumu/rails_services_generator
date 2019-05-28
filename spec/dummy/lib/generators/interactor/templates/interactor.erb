@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class <%= interactor_const(@action) %> < ApplicationJob
+class <%= const %> < ApplicationJob
   include Contracts::Core
   include Contracts::Builtin
   queue_as :default
