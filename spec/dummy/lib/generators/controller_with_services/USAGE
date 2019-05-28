@@ -1,0 +1,8 @@
+Description:
+    Explain the generator
+
+Example:
+    rails generate controller_with_services Thing
+
+    This will create:
+        what/will/it/create

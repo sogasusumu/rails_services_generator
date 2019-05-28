@@ -2,7 +2,13 @@
 Short description and motivation.
 
 ## Usage
-How to use my plugin.
+```bash
+
+# rails g controller_with_services ControllerName Actions -m using Modles
+
+rails g controller_with_services User index create show update -m User Account Email
+
+```
 
 ## Installation
 Add this line to your application's Gemfile:

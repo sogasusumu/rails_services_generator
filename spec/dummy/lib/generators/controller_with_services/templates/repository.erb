@@ -1,0 +1,42 @@
+# frozen_string_literal: true
+
+module <%= repository_const(@action, @model) %>
+  include Contracts::Core
+  include Contracts::Builtin
+
+  class << self
+    private
+
+    def included(mod)
+      raise(usable_error_msg(mod.to_s)) if usable?(mod.to_s)
+    end
+
+    def extended(obj)
+      raise(usable_error_msg(obj.class.to_s)) if usable?(obj.class.to_s)
+    end
+
+    # @return [String]
+    def allow_model
+      self.to_s.split('::').last.gsub(/Repository/, '')
+    end
+
+    # @param const [String]
+    # @return [Bool]
+    def usable?(const)
+      const == allow_model
+    end
+
+    # @param const [String]
+    def usable_error_msg(const)
+      [
+        self,
+        'usable',
+        'only',
+        allow_model,
+        "can't",
+        'use',
+        const
+      ].join(' ')
+    end
+  end
+end
