@@ -15,7 +15,7 @@ template_copy:
 	cd spec/dummy && bundle exec rails app:templates:copy
 
 run_generator:
-	spec/dummy/bin/rails g controller_with_services arg0 index show create update delete destroy -m m1 m2 m3
+	spec/dummy/bin/rails g controller_with_services controller_name index show create update delete destroy invalid_action -m model_one model_two model_three
 
 delete_generator:
-	spec/dummy/bin/rails d controller_with_services arg0
+	spec/dummy/bin/rails d controller_with_services controller_name
