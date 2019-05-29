@@ -3,6 +3,10 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
 
   class_option :models, type: :array, aliases: '-m', desc: '利用するモデル'
 
+  def add_route
+    route [route_resource, route_action].join(', ')
+  end
+
   def create_controller
     template 'controller.erb', controller_path
   end
@@ -20,6 +24,26 @@ class ControllerWithServicesGenerator < Rails::Generators::NamedBase
   end
 
   private
+
+  # @return [String]
+  def route_resource
+    [
+        'resources',
+        ":#{name.to_s.pluralize.underscore}"
+    ].join(' ')
+  end
+
+
+  def route_action
+    [
+        'only:',
+        [
+            '%i[',
+            actions.join(' '),
+            ']'
+        ].join
+    ].join(' ')
+  end
 
   def gen_interactor(action)
     generate 'interactor', "#{controller_name}##{action}"
