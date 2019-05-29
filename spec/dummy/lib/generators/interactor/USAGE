@@ -1,8 +1,10 @@
 Description:
-    Explain the generator
+   interactorを生成します。interactorは、必ず、コントローラーアクションと1対1の関係で作成してください。
+   対になるコントローラーアクションが存在しない場合、例外を返却します。
 
 Example:
-    rails generate interactor Thing
+    # ThingController#indexに対応する場合
+    rails generate interactor Thing#index
 
     This will create:
-        what/will/it/create
+        app/interactors/things/index_interactor.rb
