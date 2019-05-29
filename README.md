@@ -1,11 +1,15 @@
 # RailsServicesGenerator
-Short description and motivation.
+本プラグインをInstallすると、
+Controller及び、以下のサービスを生成するジェネレータが追加されます。
+- interactor
+- repository
+- responder
 
 ## Usage
 ```bash
 
 # rails g controller_with_services ControllerName Actions -m using Modles
-
+# 詳細は、`rails g controller_with_services`コマンドでご確認ください。
 rails g controller_with_services User index create show update -m User Account Email
 
 ```
@@ -14,21 +18,10 @@ rails g controller_with_services User index create show update -m User Account E
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rails_services_generator'
+gem 'rails_services_generator', git: 'https://github.com/sogasusumu/rails_services_generator.git'
 ```
 
 And then execute:
 ```bash
 $ bundle
 ```
-
-Or install it yourself as:
-```bash
-$ gem install rails_services_generator
-```
-
-## Contributing
-Contribution directions go here.
-
-## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
